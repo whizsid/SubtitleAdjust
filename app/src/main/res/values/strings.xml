@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Subtitle Adjust</string>
     <string name="action_settings">Settings</string>
+    <!-- Input Labels -->
+    <string name="file">Click Above Icon To Add Subtitle(.srt) File</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="time">Time</string>
 </resources>
