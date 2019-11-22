@@ -5,15 +5,38 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import com.whizsid.subtitleadjust.adapters.SubtitleAdjustListAdapter
+import com.whizsid.subtitleadjust.models.Subtitle
+import com.whizsid.subtitleadjust.models.SubtitleAdjust
 
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var listView:ListView? = null
+    var listItems:MutableList<SubtitleAdjust> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        listView = findViewById(R.id.subtitleList)
+
+        for (i in 0..1){
+
+            val subtitleAdjust = SubtitleAdjust(Subtitle("00:00:01,200","00:00:02,300","Hey how are you"),0)
+
+            listItems.add(subtitleAdjust)
+
+        }
+
+
+        val subtitleAdapter = SubtitleAdjustListAdapter(this,listItems)
+
+        listView?.adapter = subtitleAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

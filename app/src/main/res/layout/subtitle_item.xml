@@ -8,10 +8,9 @@
         android:id="@+id/subtitlePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Pick Subtitle" />
-
+    />
     <EditText
+        android:id="@+id/timePickerTextInput"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
     />
