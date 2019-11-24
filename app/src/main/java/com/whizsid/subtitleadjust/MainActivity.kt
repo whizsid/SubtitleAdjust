@@ -1,42 +1,54 @@
 package com.whizsid.subtitleadjust
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.ListView
 import com.whizsid.subtitleadjust.adapters.SubtitleAdjustListAdapter
 import com.whizsid.subtitleadjust.models.Subtitle
 import com.whizsid.subtitleadjust.models.SubtitleAdjust
+import com.whizsid.subtitleadjust.models.SubtitleFile
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+import java.io.FileReader
 
 class MainActivity : AppCompatActivity() {
 
-    private var listView:ListView? = null
     var listItems:MutableList<SubtitleAdjust> = mutableListOf()
+    private lateinit var subtitleAdapter:SubtitleAdjustListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        listView = findViewById(R.id.subtitleList)
-
-        for (i in 0..1){
-
-            val subtitleAdjust = SubtitleAdjust(Subtitle("00:00:01,200","00:00:02,300","Hey how are you"),0)
-
-            listItems.add(subtitleAdjust)
-
-        }
-
-
-        val subtitleAdapter = SubtitleAdjustListAdapter(this,listItems)
-
+        // Setting the list view adapter
+        subtitleAdapter =  SubtitleAdjustListAdapter(this,listItems)
+        val listView = findViewById<ListView>(R.id.subtitleList)
         listView?.adapter = subtitleAdapter
+
+        // Binding action to file choosing icon
+        val fileChooseIcon = findViewById<ImageView>(R.id.fileChooseIcon)
+        fileChooseIcon.setOnClickListener {
+            this.onClickFileChooseIcon(it)
+        }
+    }
+
+    private fun onClickFileChooseIcon(view:View){
+        val intent = Intent()
+            .setType("*/*")
+            .setAction(Intent.ACTION_GET_CONTENT)
+
+
+        startActivityForResult(Intent.createChooser(intent, "Select a file"), 111)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,5 +65,32 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 111 && resultCode == RESULT_OK) {
+            val selectedFile = data?.data
+
+            if(selectedFile!=null){
+                val subFile = SubtitleFile(selectedFile)
+
+                val subtitles = subFile.getSubtitles()
+
+                if(subtitles.size>2){
+
+                    for (i in 0..2){
+                        val subtitle = subtitles[i]
+                        listItems.add(SubtitleAdjust(subtitle,1213))
+
+                    }
+
+                    subtitleAdapter.notifyDataSetChanged()
+                }
+            }
+
+        }
+
     }
 }

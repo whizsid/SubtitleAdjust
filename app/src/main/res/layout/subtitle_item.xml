@@ -8,10 +8,11 @@
         android:id="@+id/subtitlePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:width="150dp"
     />
     <EditText
-        android:id="@+id/timePickerTextInput"
-        android:layout_width="100dp"
+        android:id="@+id/timePicker"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
     />
 </LinearLayout>

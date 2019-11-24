@@ -1,11 +1,13 @@
 package com.whizsid.subtitleadjust.models
 
-class Subtitle(start_time: String, end_time: String, sub_title: String) {
+class Subtitle(subId:Int,start_time: String, end_time: String, sub_title: String) {
     private val startTimestamp:Int = strToTime(start_time)
 
     private val endTimestamp:Int = strToTime(end_time)
 
     private val subtitle:String = sub_title
+
+    private val id = subId
 
     private fun strToTime(time: String): Int {
         val explodedTime = time.split(Regex("\\,|\\:"))
@@ -23,5 +25,9 @@ class Subtitle(start_time: String, end_time: String, sub_title: String) {
 
     fun getContent():String {
         return subtitle
+    }
+
+    fun getId():Int {
+        return id
     }
 }

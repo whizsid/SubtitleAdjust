@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.BaseAdapter
 import android.widget.EditText
@@ -11,7 +12,9 @@ import com.whizsid.subtitleadjust.R
 import com.whizsid.subtitleadjust.models.SubtitleAdjust
 
 class SubtitleAdjustListAdapter(private val context: Context,private val dataSource: MutableList<SubtitleAdjust>):BaseAdapter() {
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private lateinit var pickerAdapter:ArrayAdapter<String>
+    private lateinit var subtitles:Array<SubtitleAdjust>
 
     override fun getCount():Int {
         return dataSource.size
