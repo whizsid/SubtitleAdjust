@@ -1,5 +1,6 @@
 package com.whizsid.subtitleadjust
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,8 +18,10 @@ import com.whizsid.subtitleadjust.models.SubtitleAdjust
 import com.whizsid.subtitleadjust.models.SubtitleFile
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickFileChooseIcon(view:View){
         val intent = Intent()
-            .setType("*/*")
+            .setType("application/x-subrip")
             .setAction(Intent.ACTION_GET_CONTENT)
 
 
@@ -70,11 +73,14 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 111 && resultCode == RESULT_OK) {
+        if ( resultCode!= RESULT_CANCELED && requestCode == 111 && resultCode == RESULT_OK) {
             val selectedFile = data?.data
 
             if(selectedFile!=null){
-                val subFile = SubtitleFile(selectedFile)
+
+                val reader = BufferedReader(InputStreamReader(contentResolver.openInputStream(selectedFile)))
+
+                val subFile = SubtitleFile(reader)
 
                 val subtitles = subFile.getSubtitles()
 
