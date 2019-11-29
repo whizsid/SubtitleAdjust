@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <AutoCompleteTextView
-        android:id="@+id/subtitlePicker"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/subTitleItemContent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:width="150dp"
-    />
-    <EditText
-        android:id="@+id/timePicker"
-        android:layout_width="150dp"
+        android:minHeight="32dp"
+
+        android:text="@string/subtitle"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/subtitleItemTime"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-    />
+        android:text="HH:MM:SS,mmm" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 </LinearLayout>
