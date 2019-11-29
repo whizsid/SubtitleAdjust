@@ -5,7 +5,7 @@ package com.whizsid.subtitleadjust.lib
  *
  * @author WhizSid <whizsid@aol.com>
  */
-class Subtitle(subId:Int,start_time: Time, end_time: Time, sub_title: String) {
+class Subtitle(pPosition:Int,subId:Int,start_time: Time, end_time: Time, sub_title: String) {
     private val startTimestamp:Time = start_time
 
     private val endTimestamp:Time = end_time
@@ -13,6 +13,11 @@ class Subtitle(subId:Int,start_time: Time, end_time: Time, sub_title: String) {
     private val subtitle:String = sub_title
 
     private val id = subId
+
+    /**
+     * Incremental index of the subtitle
+     */
+    private val position = pPosition
 
     /**
      * Returning the sub title start time
@@ -42,7 +47,16 @@ class Subtitle(subId:Int,start_time: Time, end_time: Time, sub_title: String) {
         return id
     }
 
+    /**
+     * Returning the position of the subtitle
+     *
+     * @return zero based position
+     */
+    fun getIncrementalIndex():Int {
+        return position
+    }
+
     override fun toString(): String {
-        return "${getContent()} (${getStartTime()}:${getEndTime()})"
+        return "${getContent()} (${getStartTime()} - ${getEndTime()})"
     }
 }

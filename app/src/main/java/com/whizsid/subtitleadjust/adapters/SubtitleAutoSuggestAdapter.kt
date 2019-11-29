@@ -9,7 +9,6 @@ import android.widget.Filter
 import android.widget.TextView
 import com.whizsid.subtitleadjust.R
 import com.whizsid.subtitleadjust.lib.Subtitle
-import org.w3c.dom.Text
 
 class SubtitleAutoSuggestAdapter (context: Context, viewResourceId: Int,subtitles: MutableList<Subtitle>)
     :ArrayAdapter<Subtitle>(context,viewResourceId,subtitles){
@@ -29,7 +28,7 @@ class SubtitleAutoSuggestAdapter (context: Context, viewResourceId: Int,subtitle
                 suggestions.clear()
 
                 subtitleList.forEach {
-                    if (it.getContent().startsWith(constraint) && suggestions.size <= 30) {
+                    if (it.getContent().toLowerCase().startsWith(constraint.toString().toLowerCase()) && suggestions.size <= 30) {
                         suggestions.add(it)
                     }
                 }
@@ -63,6 +62,10 @@ class SubtitleAutoSuggestAdapter (context: Context, viewResourceId: Int,subtitle
 
     override fun getItem(position: Int): Subtitle? {
         return suggestions[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        return suggestions[position].getIncrementalIndex().toLong()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

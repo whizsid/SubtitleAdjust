@@ -1,9 +1,11 @@
 package com.whizsid.subtitleadjust.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.AutoCompleteTextView
 import android.widget.BaseAdapter
 import com.whizsid.subtitleadjust.R
@@ -35,9 +37,11 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
 
         var subtitlePicker = rowView.findViewById<AutoCompleteTextView>(R.id.subtitlePicker)
 
-        val pickerAdapter = SubtitleAutoSuggestAdapter(context,R.id.subTitleItemContent,subtitleList)
+        val pickerAdapter = SubtitleAutoSuggestAdapter(context,R.layout.subtitle_item,subtitleList)
 
         subtitlePicker.setAdapter(pickerAdapter)
+
+
 
 
 //

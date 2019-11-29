@@ -6,14 +6,16 @@
 
     <AutoCompleteTextView
         android:id="@+id/subtitlePicker"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:width="150dp"
         android:dropDownWidth="match_parent"
+        android:layout_weight="0.60"
     />
     <EditText
         android:id="@+id/timePicker"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0.40"
     />
 </LinearLayout>
