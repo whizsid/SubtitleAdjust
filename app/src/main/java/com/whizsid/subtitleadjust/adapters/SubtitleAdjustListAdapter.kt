@@ -32,18 +32,28 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
         return position.toLong()
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+    override fun getView(currentPosition: Int, convertView: View?, parent: ViewGroup?): View {
         val rowView = inflater.inflate(R.layout.subtitle_adjust_item,parent,false)
 
         var subtitlePicker = rowView.findViewById<AutoCompleteTextView>(R.id.subtitlePicker)
-
         val pickerAdapter = SubtitleAutoSuggestAdapter(context,R.layout.subtitle_item,subtitleList)
+
+
+        subtitlePicker.setOnItemClickListener { parent, view, position, id ->
+            val subtitle = pickerAdapter.getItem(position)
+            if(subtitle!==null){
+                dataSource[currentPosition].setSubtitle( subtitleList[  subtitle.getIncrementalIndex()])
+            }
+        }
+
+        subtitlePicker.setText(dataSource[currentPosition].getSubtitle().toString())
+
 
         subtitlePicker.setAdapter(pickerAdapter)
 
 
 
-
+//
 //
 //        val timePicker = rowView.findViewById<EditText>(R.id.timePickerTextInput)
 //
