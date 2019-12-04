@@ -17,6 +17,36 @@ class Time {
 
     private var milli:Int =0
 
+    companion object {
+        /**
+         * Validating a time string before parsing it
+         */
+        fun validateString(time:String):Boolean{
+            val regex = Regex("(\\d+):(\\d+):(\\d+),(\\d+)")
+
+            if(regex.containsMatchIn(time)){
+                val hours = regex.find(time)?.groupValues?.get(1)?.toInt() as Int
+                val minutes = regex.find(time)?.groupValues?.get(2)?.toInt() as Int
+                val seconds = regex.find(time)?.groupValues?.get(3)?.toInt() as Int
+                val millis = regex.find(time)?.groupValues?.get(4)?.toInt() as Int
+                if(
+                    hours>=0 &&
+                    minutes>=0 &&
+                    seconds>=0 &&
+                    millis>=0 &&
+                    hours<=60 &&
+                    minutes<=60 &&
+                    seconds<=60 &&
+                    millis<=1000
+                ){
+                    return true
+                }
+            }
+
+            return false
+        }
+    }
+
     /**
      * Creating a time by milliseconds
      *
@@ -99,4 +129,6 @@ class Time {
     fun getMilli():Int{
         return milli
     }
+
+
 }

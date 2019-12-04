@@ -7,7 +7,7 @@ package com.whizsid.subtitleadjust.lib
  */
 class SubtitleAdjust constructor (sub_title:Subtitle,sub_time:Time){
     private var subTitle: Subtitle=sub_title
-    private val time: Time = sub_time
+    private var time: Time = sub_time
 
     /**
      * Returning the subtitle instance
@@ -28,5 +28,12 @@ class SubtitleAdjust constructor (sub_title:Subtitle,sub_time:Time){
      */
     fun setSubtitle(sub:Subtitle){
         subTitle = sub
+    }
+
+    /**
+     * Changing the time
+     */
+    fun setTime(pTime:Time){
+        time = pTime
     }
 }
