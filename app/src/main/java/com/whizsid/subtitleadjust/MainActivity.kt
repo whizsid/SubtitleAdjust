@@ -1,6 +1,7 @@
 package com.whizsid.subtitleadjust
 
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -8,10 +9,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
+import android.widget.Toast
 import com.whizsid.subtitleadjust.adapters.SubtitleAdjustListAdapter
 import com.whizsid.subtitleadjust.lib.SubtitleAdjust
 import com.whizsid.subtitleadjust.lib.SubtitleFile
 import com.whizsid.subtitleadjust.lib.Time
+import com.whizsid.subtitleadjust.threads.SubtitleReadThread
 
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.BufferedReader
@@ -20,7 +23,7 @@ import java.io.InputStreamReader
 class MainActivity : AppCompatActivity() {
 
     var listItems:MutableList<SubtitleAdjust> = mutableListOf()
-    private lateinit var subtitleAdapter:SubtitleAdjustListAdapter
+    lateinit var subtitleAdapter:SubtitleAdjustListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,23 +81,13 @@ class MainActivity : AppCompatActivity() {
                 // Creating a read buffer from the Uri
                 val reader = BufferedReader(InputStreamReader(contentResolver.openInputStream(selectedFile)))
 
-                // Parse the subtitle file and subtitles
-                val subFile = SubtitleFile(reader)
+                val activityToast = Toast.makeText(this,"Please wait! Reading your file",Toast.LENGTH_LONG)
+                activityToast.show()
 
-                val subtitles = subFile.getSubtitles()
+                // Read the file in an another thread. Reader will taking a longer time.
+                val readThread = SubtitleReadThread(this,reader)
 
-                // Parsing subtitles to the adapter
-                subtitleAdapter.setSubtitles(subtitles)
-
-                if(subtitles.size>2){
-
-                    for (i in 0..2){
-                        val subtitle = subtitles[i]
-                        listItems.add(SubtitleAdjust(subtitle,subtitle.getStartTime()))
-                    }
-
-                    subtitleAdapter.notifyDataSetChanged()
-                }
+                AsyncTask.execute(readThread)
             }
 
         }
