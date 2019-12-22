@@ -28,6 +28,7 @@ class SpeedCalculator(var adjustList: MutableList<SubtitleAdjust>) {
         }
 
         var index = 0
+
         adjustList.forEach {
             if(index+1 < length){
                 val first = adjustList[index]
@@ -88,11 +89,14 @@ class SpeedCalculator(var adjustList: MutableList<SubtitleAdjust>) {
         var correctedSubtitles = mutableListOf<Subtitle>()
 
         errorSubtitles.forEach {
+            val startTime = it.getStartTime().toInt()*this.speed - this.offset
+            val endTime = it.getEndTime().toInt()*this.speed - this.offset
+
             correctedSubtitles.add(Subtitle(
                 it.getIncrementalIndex(),
                 it.getId(),
-                Time(it.getStartTime()*this.speed - this.offset),
-                Time(it.getEndTime()*this.speed - this.offset),
+                Time(startTime.toDouble()),
+                Time(endTime.toDouble()),
                 it.getContent()
             ))
         }

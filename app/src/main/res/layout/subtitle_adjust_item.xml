@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:dropDownWidth="match_parent"
         android:layout_weight="0.60"
+        android:focusedByDefault="false"
+        android:defaultFocusHighlightEnabled="false"
     />
     <EditText
         android:id="@+id/timePicker"
@@ -16,5 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_weight="0.40"
+        android:focusedByDefault="false"
+        android:defaultFocusHighlightEnabled="false"
     />
 </LinearLayout>

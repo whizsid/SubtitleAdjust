@@ -10,7 +10,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.whizsid.subtitleadjust.adapters.SubtitleAdjustListAdapter
+import com.whizsid.subtitleadjust.lib.Subtitle
 import com.whizsid.subtitleadjust.lib.SubtitleAdjust
 import com.whizsid.subtitleadjust.lib.SubtitleFile
 import com.whizsid.subtitleadjust.lib.Time
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     var listItems:MutableList<SubtitleAdjust> = mutableListOf()
     lateinit var subtitleAdapter:SubtitleAdjustListAdapter
+    var subtitles: MutableList<Subtitle> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,24 @@ class MainActivity : AppCompatActivity() {
         fileChooseIcon.setOnClickListener {
             this.onClickFileChooseIcon(it)
         }
+
+
+        // Hiding fab icon on creation
+        val fabIcon = findViewById<FloatingActionButton>(R.id.subtitleAdjustAddButton)
+        fabIcon.hide()
+
+        fabIcon.setOnClickListener {
+
+            if(subtitles.size>0){
+
+                val index = listItems.size
+                val subtitle = subtitles[index]
+                listItems.add(SubtitleAdjust(subtitle,subtitle.getStartTime()))
+
+                subtitleAdapter.notifyDataSetChanged()
+            }
+        }
+
     }
 
     /**

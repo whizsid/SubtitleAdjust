@@ -1,6 +1,8 @@
 package com.whizsid.subtitleadjust.threads
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.whizsid.subtitleadjust.MainActivity
+import com.whizsid.subtitleadjust.R
 import com.whizsid.subtitleadjust.lib.SubtitleAdjust
 import com.whizsid.subtitleadjust.lib.SubtitleFile
 import java.io.BufferedReader
@@ -18,8 +20,11 @@ class SubtitleReadThread(context: MainActivity,private val reader:BufferedReader
 
         val subtitles = subFile.getSubtitles()
 
+        activityContext.subtitles = subtitles
+
         // Parsing subtitles to the adapter
         activityContext.subtitleAdapter.setSubtitles(subtitles)
+
 
         if(subtitles.size>2){
 
@@ -29,6 +34,8 @@ class SubtitleReadThread(context: MainActivity,private val reader:BufferedReader
             }
 
             activityContext.runOnUiThread(Runnable {
+                val fabIcon = activityContext.findViewById<FloatingActionButton>(R.id.subtitleAdjustAddButton)
+                fabIcon.show()
                 activityContext.subtitleAdapter.notifyDataSetChanged()
             })
         }
