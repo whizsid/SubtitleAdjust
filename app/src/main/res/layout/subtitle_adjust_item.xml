@@ -3,22 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
+
     <AutoCompleteTextView
         android:id="@+id/subtitlePicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:dropDownWidth="match_parent"
         android:layout_weight="0.60"
-        android:focusedByDefault="false"
-        android:defaultFocusHighlightEnabled="false"
-    />
+        android:dropDownWidth="match_parent"
+        android:textColor="#f0f0f0"
+        android:textColorHighlight="#3f7727"
+        android:textColorLink="#6ac045" />
+
     <EditText
         android:id="@+id/timePicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_weight="0.40"
-        android:focusedByDefault="false"
-        android:defaultFocusHighlightEnabled="false"
-    />
+        android:focusable="false"
+        android:inputType="time"
+        android:textColor="#f0f0f0"
+        android:textColorHighlight="#3f7727"
+        android:textColorLink="#6ac045" />
 </LinearLayout>
