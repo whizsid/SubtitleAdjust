@@ -53,13 +53,19 @@ class Time {
      * @param pTime current millisecond timestamp
      */
     constructor(pTime:Double){
-        hour = floor(pTime/(1000*60*60)) as Int
 
-        minute = floor((pTime-hour*1000*60*60)/1000*60) as Int
+        var time = pTime
 
-        second = floor( (pTime-minute*1000*60)/1000) as Int
+        hour = floor(time/(1000*60*60)).toInt()
+        time -= hour*1000*60*60
 
-        milli = floor(pTime - second*1000) as Int
+        minute = floor(time/(1000*60)).toInt()
+        time -= minute*1000*60
+
+        second = floor( time/1000).toInt()
+        time -= second*1000
+
+        milli = time.toInt()
     }
 
     /**

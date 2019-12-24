@@ -36,7 +36,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="false"
-        app:backgroundTint="#6ac045"
+        app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
 

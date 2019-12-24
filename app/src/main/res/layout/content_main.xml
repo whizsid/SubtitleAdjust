@@ -43,22 +43,20 @@
             android:orientation="horizontal">
 
             <Button
+                style="@style/Secondary"
                 android:id="@+id/button2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:background="#9d4341"
-                android:text="@android:string/cancel"
-                android:textColor="#F0F0F0" />
+                android:text="@android:string/cancel" />
 
             <Button
+                style="@style/Primary"
                 android:id="@+id/button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:background="#6ac045"
-                android:text="@android:string/ok"
-                android:textColor="#F0F0F0" />
+                android:text="@android:string/ok" />
         </LinearLayout>
 
         <View

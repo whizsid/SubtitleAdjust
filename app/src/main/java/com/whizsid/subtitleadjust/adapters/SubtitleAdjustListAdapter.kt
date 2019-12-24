@@ -1,5 +1,6 @@
 package com.whizsid.subtitleadjust.adapters
 
+import android.app.Dialog
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,9 +8,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
-import android.widget.BaseAdapter
-import android.widget.EditText
+import android.widget.*
 import com.whizsid.subtitleadjust.R
 import com.whizsid.subtitleadjust.lib.Subtitle
 import com.whizsid.subtitleadjust.lib.SubtitleAdjust
@@ -17,7 +16,7 @@ import com.whizsid.subtitleadjust.lib.Time
 
 class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: MutableList<SubtitleAdjust>):BaseAdapter() {
 
-    var inflater: LayoutInflater = pContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private var inflater: LayoutInflater = pContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private val context = pContext
 
@@ -68,28 +67,62 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
 
         timePicker.setText(dataSource[currentPosition].getTime().toString())
 
-        timePicker.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                if(s!=null){
-                    val text = s.toString()
+        timePicker.setOnClickListener {
+            val dialog = Dialog(context)
+            dialog.setTitle("Set the actual start time")
+            dialog.setContentView(R.layout.time_picker)
 
-                    val validated = Time.validateString(text)
+            val okButton = dialog.findViewById<Button>(R.id.timeOK)
+            val cancelButton = dialog.findViewById<Button>(R.id.timeCancel)
 
-                    if(validated){
-                        dataSource[currentPosition].setTime(Time(text))
-                    }
+            val hourPicker = dialog.findViewById<NumberPicker>(R.id.hourPicker)
+            val minutePicker = dialog.findViewById<NumberPicker>(R.id.minutePicker)
+            val secondPicker = dialog.findViewById<NumberPicker>(R.id.secondPicker)
+            val milliPicker = dialog.findViewById<NumberPicker>(R.id.milliPicker)
 
-                }
+            hourPicker.maxValue = 24
+            hourPicker.minValue = 0
+            hourPicker.wrapSelectorWheel = true
+
+            minutePicker.maxValue = 60
+            minutePicker.minValue =0
+            minutePicker.wrapSelectorWheel = true
+
+            secondPicker.maxValue = 60
+            secondPicker.minValue = 0
+            secondPicker.wrapSelectorWheel = true
+
+            milliPicker.maxValue = 1000
+            milliPicker.minValue = 0
+            milliPicker.wrapSelectorWheel = true
+
+            val time = dataSource[currentPosition].getTime()
+
+            hourPicker.value = time.getHour()
+            minutePicker.value = time.getMinute()
+            secondPicker.value = time.getSecond()
+            milliPicker.value = time.getMilli()
+
+            cancelButton.setOnClickListener {
+                dialog.dismiss()
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            okButton.setOnClickListener{
+                val hour = hourPicker.value
+                val minute = minutePicker.value
+                val second = secondPicker.value
+                val milli = milliPicker.value
 
+                val changedTime = milli + second*1000 + minute*1000*60 + hour * 1000 * 3600
+
+                dataSource[currentPosition].setTime(Time(changedTime.toDouble()))
+                this.notifyDataSetChanged()
+
+                dialog.dismiss()
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-        })
+            dialog.show()
+        }
 
         return rowView
     }
