@@ -20,8 +20,6 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
 
     private val context = pContext
 
-    private var subtitleList:MutableList<Subtitle> = mutableListOf()
-
     override fun getCount():Int {
         return dataSource.size
     }
@@ -40,12 +38,14 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
 
         // Subtitle picker
         var subtitlePicker = rowView.findViewById<AutoCompleteTextView>(R.id.subtitlePicker)
-        val pickerAdapter = SubtitleAutoSuggestAdapter(context,R.layout.subtitle_item,subtitleList)
+        val pickerAdapter = SubtitleAutoSuggestAdapter(context,R.layout.subtitle_item)
 
         subtitlePicker.setOnItemClickListener { parent, view, position, id ->
             val subtitle = pickerAdapter.getItem(position)
             if(subtitle!==null){
-                dataSource[currentPosition].setSubtitle( subtitleList[  subtitle.getIncrementalIndex()])
+                dataSource[currentPosition].setSubtitle( subtitle)
+                dataSource[currentPosition].setTime(subtitle.getStartTime())
+                this.notifyDataSetChanged()
             }
         }
 
@@ -58,7 +58,7 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
             true
         }
 
-        subtitlePicker.setText(dataSource[currentPosition].getSubtitle().toString())
+        subtitlePicker.setText(dataSource[currentPosition].getSubtitle().getContent())
 
         subtitlePicker.setAdapter(pickerAdapter)
 
@@ -80,19 +80,19 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
             val secondPicker = dialog.findViewById<NumberPicker>(R.id.secondPicker)
             val milliPicker = dialog.findViewById<NumberPicker>(R.id.milliPicker)
 
-            hourPicker.maxValue = 24
+            hourPicker.maxValue = 23
             hourPicker.minValue = 0
             hourPicker.wrapSelectorWheel = true
 
-            minutePicker.maxValue = 60
+            minutePicker.maxValue = 59
             minutePicker.minValue =0
             minutePicker.wrapSelectorWheel = true
 
-            secondPicker.maxValue = 60
+            secondPicker.maxValue = 59
             secondPicker.minValue = 0
             secondPicker.wrapSelectorWheel = true
 
-            milliPicker.maxValue = 1000
+            milliPicker.maxValue = 999
             milliPicker.minValue = 0
             milliPicker.wrapSelectorWheel = true
 
@@ -115,7 +115,7 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
 
                 val changedTime = milli + second*1000 + minute*1000*60 + hour * 1000 * 3600
 
-                dataSource[currentPosition].setTime(Time(changedTime.toDouble()))
+                dataSource[currentPosition].setTime(Time(changedTime.toLong()))
                 this.notifyDataSetChanged()
 
                 dialog.dismiss()
@@ -125,9 +125,5 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
         }
 
         return rowView
-    }
-
-    fun setSubtitles(subtitles:MutableList<Subtitle>):Unit{
-        subtitleList = subtitles
     }
 }

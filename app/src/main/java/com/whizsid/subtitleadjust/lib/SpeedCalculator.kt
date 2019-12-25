@@ -95,8 +95,8 @@ class SpeedCalculator(var adjustList: MutableList<SubtitleAdjust>) {
             correctedSubtitles.add(Subtitle(
                 it.getIncrementalIndex(),
                 it.getId(),
-                Time(startTime.toDouble()),
-                Time(endTime.toDouble()),
+                Time(startTime.toLong()),
+                Time(endTime.toLong()),
                 it.getContent()
             ))
         }

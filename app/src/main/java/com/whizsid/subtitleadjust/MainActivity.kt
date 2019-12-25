@@ -6,67 +6,52 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
-import android.widget.ListView
 import android.widget.Toast
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.whizsid.subtitleadjust.adapters.SubtitleAdjustListAdapter
-import com.whizsid.subtitleadjust.lib.Subtitle
-import com.whizsid.subtitleadjust.lib.SubtitleAdjust
-import com.whizsid.subtitleadjust.lib.SubtitleFile
-import com.whizsid.subtitleadjust.lib.Time
 import com.whizsid.subtitleadjust.threads.SubtitleReadThread
+import info.abdolahi.CircularMusicProgressBar
+import info.abdolahi.OnCircularSeekBarChangeListener
 
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
-    var listItems:MutableList<SubtitleAdjust> = mutableListOf()
-    lateinit var subtitleAdapter:SubtitleAdjustListAdapter
-    var subtitles: MutableList<Subtitle> = mutableListOf()
+    lateinit var fileChooseIcon: CircularMusicProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        // Setting the list view adapter
-        subtitleAdapter =  SubtitleAdjustListAdapter(this,listItems)
-        val listView = findViewById<ListView>(R.id.subtitleList)
-        listView?.adapter = subtitleAdapter
-
         // Binding action to file choosing icon
-        val fileChooseIcon = findViewById<ImageView>(R.id.fileChooseIcon)
-        fileChooseIcon.setOnClickListener {
-            this.onClickFileChooseIcon(it)
-        }
+        fileChooseIcon = findViewById(R.id.fileSelector)
 
+        fileChooseIcon.setValue((0).toFloat())
 
-        // Hiding fab icon on creation
-        val fabIcon = findViewById<FloatingActionButton>(R.id.subtitleAdjustAddButton)
-        fabIcon.hide()
-
-        fabIcon.setOnClickListener {
-
-            if(subtitles.size>0){
-
-                val index = listItems.size
-                val subtitle = subtitles[index]
-                listItems.add(SubtitleAdjust(subtitle,subtitle.getStartTime()))
-
-                subtitleAdapter.notifyDataSetChanged()
+        fileChooseIcon.setOnCircularBarChangeListener(object: OnCircularSeekBarChangeListener{
+            override fun onClick(circularBar: CircularMusicProgressBar?) {
+                this@MainActivity.onClickFileChooseIcon()
             }
-        }
+
+            override fun onLongPress(circularBar: CircularMusicProgressBar?) {
+            }
+
+            override fun onProgressChanged(
+                circularBar: CircularMusicProgressBar?,
+                progress: Int,
+                fromUser: Boolean
+            ) {
+            }
+        })
+
 
     }
 
     /**
      * This function is calling after the file icon clicked
      */
-    private fun onClickFileChooseIcon(view:View){
+    private fun onClickFileChooseIcon(){
         // Open the file picker
         val intent = Intent()
             .setType("*/*")

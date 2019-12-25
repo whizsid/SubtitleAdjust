@@ -8,13 +8,14 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
 import com.whizsid.subtitleadjust.R
+import com.whizsid.subtitleadjust.database.DBOpenHelper
+import com.whizsid.subtitleadjust.database.SubtitleModel
 import com.whizsid.subtitleadjust.lib.Subtitle
 
-class SubtitleAutoSuggestAdapter (context: Context, viewResourceId: Int,subtitles: MutableList<Subtitle>)
-    :ArrayAdapter<Subtitle>(context,viewResourceId,subtitles){
+class SubtitleAutoSuggestAdapter (context: Context, viewResourceId: Int)
+    :ArrayAdapter<Subtitle>(context,viewResourceId){
 
-    private val subtitleList = subtitles
-    private var suggestions: MutableList<Subtitle> = mutableListOf()
+    var suggestions: MutableList<Subtitle> = mutableListOf()
     var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
@@ -27,10 +28,12 @@ class SubtitleAutoSuggestAdapter (context: Context, viewResourceId: Int,subtitle
             if(constraint!=null) {
                 suggestions.clear()
 
-                subtitleList.forEach {
-                    if (it.getContent().toLowerCase().startsWith(constraint.toString().toLowerCase()) && suggestions.size <= 30) {
-                        suggestions.add(it)
-                    }
+                val dbHelper = DBOpenHelper(context,null)
+
+                val searched = dbHelper.search(SubtitleModel,constraint.toString().toLowerCase(),30)
+
+                searched.forEach {
+                    suggestions.add(it)
                 }
 
                 results.values = suggestions

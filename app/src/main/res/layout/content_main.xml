@@ -9,9 +9,11 @@
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
+        android:id="@+id/align"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
         <LinearLayout
             android:id="@+id/uploadIcon"
@@ -19,59 +21,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/fileChooseIcon"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
+            <info.abdolahi.CircularMusicProgressBar
+                android:id="@+id/fileSelector"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:layout_gravity="center"
-                android:adjustViewBounds="true"
+                android:src="@mipmap/file_select"
+                app:border_color="@color/colorPrimaryDark"
+                app:border_width="7dp"
+                app:centercircle_diammterer="1"
+                app:progress_color="@color/colorAccent"
+                app:progress_startAngle="-90"
+                app:draw_anticlockwise="false"
                 android:clickable="true"
-                app:srcCompat="@android:drawable/ic_menu_upload" />
+            />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/file"
                 android:layout_gravity="center"
-                />
+                android:layout_marginTop="20dp"
+                android:textColor="#fff"
+                android:text="@string/file" />
         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/confirmButtons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                style="@style/Secondary"
-                android:id="@+id/button2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@android:string/cancel" />
-
-            <Button
-                style="@style/Primary"
-                android:id="@+id/button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@android:string/ok" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:background="?android:attr/listDivider" />
-
-        <ListView
-            android:id="@+id/subtitleList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

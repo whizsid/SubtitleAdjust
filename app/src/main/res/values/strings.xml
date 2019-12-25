@@ -4,5 +4,6 @@
     <!-- Input Labels -->
     <string name="file">Click Above Icon To Add Subtitle(.srt) File</string>
     <string name="subtitle">Subtitle</string>
+    <string name="actualTime">Actual Start Time</string>
     <string name="time">Time</string>
 </resources>
