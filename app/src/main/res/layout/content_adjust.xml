@@ -65,7 +65,7 @@
 
             <Button
                 style="@style/Secondary"
-                android:id="@+id/button2"
+                android:id="@+id/adjustCancelButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -73,7 +73,7 @@
 
             <Button
                 style="@style/Primary"
-                android:id="@+id/button"
+                android:id="@+id/adjustConfirmButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
