@@ -12,20 +12,17 @@ import com.whizsid.subtitleadjust.lib.SubtitleAdjust
 import com.whizsid.subtitleadjust.lib.Time
 import kotlinx.android.synthetic.main.app_bar.*
 import android.content.Intent
-import kotlinx.android.synthetic.main.content_adjust.*
+import android.widget.Toast
+import androidx.core.content.PermissionChecker
 import net.rdrei.android.dirchooser.DirectoryChooserActivity
 import net.rdrei.android.dirchooser.DirectoryChooserConfig
 
 
-
-
-
-
 class SubtitleAdjustActivity : AppCompatActivity() {
-
 
     var listItems:MutableList<SubtitleAdjust> = mutableListOf()
     lateinit var subtitleAdapter:SubtitleAdjustListAdapter
+    lateinit var dir: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +32,7 @@ class SubtitleAdjustActivity : AppCompatActivity() {
 
         val dbHelper = DBOpenHelper(this,null)
 
+        // Loading two subtitles. two subtitles is required to find offset and speed.
         val subtitles = dbHelper.search(SubtitleModel,"",2)
 
         subtitles.forEach {
@@ -47,7 +45,6 @@ class SubtitleAdjustActivity : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.subtitleList)
         listView?.adapter = subtitleAdapter
 
-        // Hiding fab icon on creation
         val fabIcon = findViewById<FloatingActionButton>(R.id.subtitleAdjustAddButton)
 
         fabIcon.setOnClickListener {
@@ -73,18 +70,32 @@ class SubtitleAdjustActivity : AppCompatActivity() {
         val confirmButton = findViewById<Button>(R.id.adjustConfirmButton)
 
         confirmButton.setOnClickListener {
-            val chooserIntent = Intent(this, DirectoryChooserActivity::class.java)
+            // Check read write permissions for the external storage
+            val readPermission = PermissionChecker.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            val writePermission = PermissionChecker.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-            val config = DirectoryChooserConfig.builder()
-                .newDirectoryName("DirChooserSample")
-                .allowReadOnlyDirectory(true)
-                .allowNewDirectoryNameModification(true)
-                .build()
+            if (readPermission == PermissionChecker.PERMISSION_GRANTED&&writePermission == PermissionChecker.PERMISSION_GRANTED) {
 
-            chooserIntent.putExtra(DirectoryChooserActivity.EXTRA_CONFIG, config)
+                val chooserIntent = Intent(this, DirectoryChooserActivity::class.java)
 
-            // REQUEST_DIRECTORY is a constant integer to identify the request, e.g. 0
-            startActivityForResult(chooserIntent, REQUEST_DIRECTORY)
+
+                val config = DirectoryChooserConfig.builder()
+                    .newDirectoryName("Subtitles")
+                    .initialDirectory("")
+                    .allowReadOnlyDirectory(true)
+                    .allowNewDirectoryNameModification(true)
+                    .build()
+
+                chooserIntent.putExtra(DirectoryChooserActivity.EXTRA_CONFIG, config)
+
+                // REQUEST_DIRECTORY is a constant integer to identify the request, e.g. 0
+                startActivityForResult(chooserIntent, REQUEST_DIRECTORY)
+
+            } else {
+                val toast = Toast.makeText(this,"This app required read,write permissions for your external storage. Otherwise this app won't work.",Toast.LENGTH_LONG)
+                toast.show()
+            }
+
         }
     }
 
@@ -104,16 +115,14 @@ class SubtitleAdjustActivity : AppCompatActivity() {
 
         if (requestCode == REQUEST_DIRECTORY) {
             if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
-                val dir =  data!!.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR)
+                val directory =  data!!.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR)
 
-                this.directorySelected(dir)
-            } else {
-                // Nothing selected
+                this.directorySelected(directory)
             }
         }
     }
 
-    private fun directorySelected(dir: String){
+    private fun directorySelected(directory: String){
 
     }
 
