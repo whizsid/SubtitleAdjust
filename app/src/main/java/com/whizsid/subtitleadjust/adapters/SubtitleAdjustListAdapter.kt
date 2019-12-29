@@ -2,15 +2,12 @@ package com.whizsid.subtitleadjust.adapters
 
 import android.app.Dialog
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.whizsid.subtitleadjust.R
-import com.whizsid.subtitleadjust.lib.Subtitle
 import com.whizsid.subtitleadjust.lib.SubtitleAdjust
 import com.whizsid.subtitleadjust.lib.Time
 

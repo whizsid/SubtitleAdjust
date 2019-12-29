@@ -6,4 +6,5 @@
     <string name="subtitle">Subtitle</string>
     <string name="actualTime">Actual Start Time</string>
     <string name="time">Time</string>
+    <string name="enterFileName">Enter the file name to save on:</string>
 </resources>

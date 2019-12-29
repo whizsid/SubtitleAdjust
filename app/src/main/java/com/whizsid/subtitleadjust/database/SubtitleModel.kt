@@ -6,7 +6,6 @@ import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import com.whizsid.subtitleadjust.lib.Subtitle
 import com.whizsid.subtitleadjust.lib.Time
-import java.util.*
 
 object SubtitleModel : Model<Subtitle> {
     override val tableName = "subtitles"
@@ -57,7 +56,12 @@ object SubtitleModel : Model<Subtitle> {
     }
 
     override fun search(db:SQLiteDatabase,keyword:String,limit:Int?) : MutableList<Subtitle>{
-        val cursor = db.rawQuery("SELECT * FROM ${this.tableName} WHERE ${this.contentColumn} LIKE '%$keyword%' LIMIT ${limit?:30}",null)
+        var limitClause =""
+        if(limit!==null){
+            limitClause = "LIMIT $limit"
+        }
+        
+        val cursor = db.rawQuery("SELECT * FROM ${this.tableName} WHERE ${this.contentColumn} LIKE '%$keyword%' $limitClause;",null)
 
         var subtitles = mutableListOf<Subtitle>()
 

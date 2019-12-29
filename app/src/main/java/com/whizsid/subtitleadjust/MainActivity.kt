@@ -14,6 +14,8 @@ import info.abdolahi.OnCircularSeekBarChangeListener
 import kotlinx.android.synthetic.main.app_bar.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import android.net.Uri
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +46,25 @@ class MainActivity : AppCompatActivity() {
             ) {
             }
         })
+
+        val message = intent.extras?.get("message_from_previous")
+
+        if(message!=null){
+            val toast = Toast.makeText(this,message as String,Toast.LENGTH_LONG)
+            toast.show()
+        }
+
+        // If some one opened the file via file explorer
+
+        val action = intent.action
+
+        if (Intent.ACTION_VIEW == action) {
+            val uri = intent.data
+
+            if(uri!=null){
+                this.onFileSelected(uri)
+            }
+        }
 
 
     }
@@ -84,19 +105,23 @@ class MainActivity : AppCompatActivity() {
             val selectedFile = data?.data
 
             if(selectedFile!=null){
-                // Creating a read buffer from the Uri
-                val reader = BufferedReader(InputStreamReader(contentResolver.openInputStream(selectedFile)))
-
-                val activityToast = Toast.makeText(this,"Please wait! Reading your file",Toast.LENGTH_LONG)
-                activityToast.show()
-
-                // Read the file in an another thread. Reader will taking a longer time.
-                val readThread = SubtitleReadThread(this,reader)
-
-                AsyncTask.execute(readThread)
+                this.onFileSelected(selectedFile)
             }
 
         }
 
+    }
+
+    private fun onFileSelected(selectedFile:Uri){
+        // Creating a read buffer from the Uri
+        val reader = BufferedReader(InputStreamReader(contentResolver.openInputStream(selectedFile)))
+
+        val activityToast = Toast.makeText(this,"Please wait! Reading your file",Toast.LENGTH_LONG)
+        activityToast.show()
+
+        // Read the file in an another thread. Reader will taking a longer time.
+        val readThread = SubtitleReadThread(this,reader)
+
+        AsyncTask.execute(readThread)
     }
 }

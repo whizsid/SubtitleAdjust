@@ -85,22 +85,18 @@ class SpeedCalculator(var adjustList: MutableList<SubtitleAdjust>) {
     /**
      * Returning the corrected subtitle after calculating the offset and speed
      */
-    fun getCorrectedSubtitles(errorSubtitles: MutableList<Subtitle>):MutableList<Subtitle>{
-        var correctedSubtitles = mutableListOf<Subtitle>()
+    fun getCorrectedSubtitle(errorSubtitle: Subtitle):Subtitle{
 
-        errorSubtitles.forEach {
-            val startTime = it.getStartTime().toInt()*this.speed - this.offset
-            val endTime = it.getEndTime().toInt()*this.speed - this.offset
+        val startTime = errorSubtitle.getStartTime().toInt()*this.speed - this.offset
+        val endTime = errorSubtitle.getEndTime().toInt()*this.speed - this.offset
 
-            correctedSubtitles.add(Subtitle(
-                it.getIncrementalIndex(),
-                it.getId(),
-                Time(startTime.toLong()),
-                Time(endTime.toLong()),
-                it.getContent()
-            ))
-        }
+        return Subtitle(
+            errorSubtitle.getIncrementalIndex(),
+            errorSubtitle.getId(),
+            Time(startTime.toLong()),
+            Time(endTime.toLong()),
+            errorSubtitle.getContent()
+        )
 
-        return  correctedSubtitles
     }
 }
