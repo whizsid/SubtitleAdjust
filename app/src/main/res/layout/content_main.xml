@@ -34,6 +34,7 @@
                 app:progress_startAngle="-90"
                 app:draw_anticlockwise="false"
                 android:clickable="true"
+                android:focusable="true"
             />
 
             <TextView
