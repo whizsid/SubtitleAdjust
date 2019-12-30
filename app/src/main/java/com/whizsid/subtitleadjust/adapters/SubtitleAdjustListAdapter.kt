@@ -34,7 +34,7 @@ class SubtitleAdjustListAdapter(pContext: Context,private val dataSource: Mutabl
         val rowView = inflater.inflate(R.layout.subtitle_adjust_item,parent,false)
 
         // Subtitle picker
-        var subtitlePicker = rowView.findViewById<AutoCompleteTextView>(R.id.subtitlePicker)
+        val subtitlePicker = rowView.findViewById<AutoCompleteTextView>(R.id.subtitlePicker)
         val pickerAdapter = SubtitleAutoSuggestAdapter(context,R.layout.subtitle_item)
 
         subtitlePicker.setOnItemClickListener { parent, view, position, id ->

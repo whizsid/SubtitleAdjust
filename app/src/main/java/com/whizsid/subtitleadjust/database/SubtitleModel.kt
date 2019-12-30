@@ -31,7 +31,7 @@ object SubtitleModel : Model<Subtitle> {
     }
 
     override fun insert(db:SQLiteDatabase,subtitle:Subtitle):Long{
-        var values = ContentValues()
+        val values = ContentValues()
 
         values.put(this.idColumn,subtitle.getId())
         values.put(this.contentColumn,subtitle.getContent())
@@ -63,7 +63,7 @@ object SubtitleModel : Model<Subtitle> {
         
         val cursor = db.rawQuery("SELECT * FROM ${this.tableName} WHERE ${this.contentColumn} LIKE '%$keyword%' $limitClause;",null)
 
-        var subtitles = mutableListOf<Subtitle>()
+        val subtitles = mutableListOf<Subtitle>()
 
         if(cursor!!.moveToFirst()){
 

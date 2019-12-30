@@ -15,10 +15,6 @@ import kotlinx.android.synthetic.main.app_bar.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import android.net.Uri
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.widget.TextView
 import kotlin.system.exitProcess
 

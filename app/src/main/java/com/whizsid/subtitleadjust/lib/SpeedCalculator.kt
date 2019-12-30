@@ -5,7 +5,7 @@ package com.whizsid.subtitleadjust.lib
  *
  * @author WhizSid <whizsid@aol.com>
  */
-class SpeedCalculator(var adjustList: MutableList<SubtitleAdjust>) {
+class SpeedCalculator(private var adjustList: MutableList<SubtitleAdjust>) {
     private val adjustedItems = adjustList
 
     private var offset = 0
@@ -31,7 +31,7 @@ class SpeedCalculator(var adjustList: MutableList<SubtitleAdjust>) {
 
         adjustList.forEach {
             if(index+1 < length){
-                val first = adjustList[index]
+                val first = it
                 val second = adjustList[index+1]
 
                 speeds += this.calculateSpeed(

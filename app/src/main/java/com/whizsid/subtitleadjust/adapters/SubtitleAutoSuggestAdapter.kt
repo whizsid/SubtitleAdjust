@@ -16,14 +16,14 @@ class SubtitleAutoSuggestAdapter (context: Context, viewResourceId: Int)
     :ArrayAdapter<Subtitle>(context,viewResourceId){
 
     var suggestions: MutableList<Subtitle> = mutableListOf()
-    var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
     inner class SubtitleFilter : Filter() {
 
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            var results = FilterResults()
+            val results = FilterResults()
 
             if(constraint!=null) {
                 suggestions.clear()

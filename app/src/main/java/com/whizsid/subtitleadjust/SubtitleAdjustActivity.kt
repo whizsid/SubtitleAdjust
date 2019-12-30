@@ -15,6 +15,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.*
 import androidx.core.content.PermissionChecker
+import com.whizsid.subtitleadjust.lib.SpeedCalculator
 import net.rdrei.android.dirchooser.DirectoryChooserActivity
 import net.rdrei.android.dirchooser.DirectoryChooserConfig
 import java.io.File
@@ -22,9 +23,9 @@ import java.io.File
 
 class SubtitleAdjustActivity : AppCompatActivity() {
 
-    var listItems:MutableList<SubtitleAdjust> = mutableListOf()
-    lateinit var subtitleAdapter:SubtitleAdjustListAdapter
-    lateinit var dir: String
+    private var listItems:MutableList<SubtitleAdjust> = mutableListOf()
+    private lateinit var subtitleAdapter:SubtitleAdjustListAdapter
+    private lateinit var dir: String
     private lateinit var pathDialog:Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +53,7 @@ class SubtitleAdjustActivity : AppCompatActivity() {
 
         fabIcon.setOnClickListener {
 
-            var subtitle = dbHelper.getNth(SubtitleModel,listItems.size.toLong())
+            val subtitle = dbHelper.getNth(SubtitleModel,listItems.size.toLong())
 
             if(subtitle!=null){
                 listItems.add(SubtitleAdjust(subtitle,subtitle.getStartTime()))
@@ -171,16 +172,20 @@ class SubtitleAdjustActivity : AppCompatActivity() {
         val dbHelper = DBOpenHelper(this,null)
 
         val subtitles = dbHelper.search(SubtitleModel,"",null)
+        val calculator = SpeedCalculator(listItems)
+        calculator.calculate()
 
         val toast = Toast.makeText(this,R.string.writingFile,Toast.LENGTH_LONG)
         toast.show()
 
         file.printWriter().use { out ->
             subtitles.forEach {
-                val id = it.getId()
-                val content = it.getContent()
-                val startTime = it.getStartTime()
-                val endTime = it.getEndTime()
+                val corrected = calculator.getCorrectedSubtitle(it)
+
+                val id = corrected.getId()
+                val content = corrected.getContent()
+                val startTime = corrected.getStartTime()
+                val endTime = corrected.getEndTime()
 
                 out.println(id)
                 out.println("$startTime --> $endTime")
