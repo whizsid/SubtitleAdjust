@@ -37,6 +37,10 @@ class SubtitleReadThread(context: MainActivity,private val reader:BufferedReader
         // Regex pattern for line that containing subtitle content. This pattern matching anything. "Hy 232!"
         val regexSubtitle = Regex("^(.+)$")
 
+        activityContext.runOnUiThread {
+            activityContext.fileChooseIcon.setIndeterminate(true)
+        }
+
         reader.forEachLine {
             val trimmed = it.trim()
             when {
@@ -75,9 +79,6 @@ class SubtitleReadThread(context: MainActivity,private val reader:BufferedReader
                         lastContent += "\n${found?.get(0)?:""}"
                     }
 
-                    activityContext.runOnUiThread {
-                        activityContext.fileChooseIcon.setValueWithNoAnimation(count.rem(100).toFloat())
-                    }
                     lastMode = LAST_READ_CONTENT
                 }
             }
@@ -85,11 +86,13 @@ class SubtitleReadThread(context: MainActivity,private val reader:BufferedReader
         }
 
         activityContext.runOnUiThread {
+
             val intent = Intent(activityContext,SubtitleAdjustActivity::class.java)
 
             activityContext.startActivity(intent)
 
             activityContext.finish()
+
         }
 
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND)

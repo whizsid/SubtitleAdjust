@@ -15,6 +15,12 @@ import kotlinx.android.synthetic.main.app_bar.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import android.net.Uri
+import androidx.core.app.ComponentActivity
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.widget.TextView
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -93,7 +99,16 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_star -> {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/whizsid/SubtitleAdjust"))
+                startActivity(browserIntent)
+                return true
+            }
+            R.id.action_quit -> {
+                finish()
+                exitProcess(0)
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -116,8 +131,9 @@ class MainActivity : AppCompatActivity() {
         // Creating a read buffer from the Uri
         val reader = BufferedReader(InputStreamReader(contentResolver.openInputStream(selectedFile)))
 
-        val activityToast = Toast.makeText(this,"Please wait! Reading your file",Toast.LENGTH_LONG)
-        activityToast.show()
+        val helperText = findViewById<TextView>(R.id.fileChooserHelper)
+
+        helperText.text = resources.getString(R.string.readingFile)
 
         // Read the file in an another thread. Reader will taking a longer time.
         val readThread = SubtitleReadThread(this,reader)

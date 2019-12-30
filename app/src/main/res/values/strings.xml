@@ -3,8 +3,14 @@
     <string name="action_settings">Settings</string>
     <!-- Input Labels -->
     <string name="file">Click Above Icon To Add Subtitle(.srt) File</string>
+    <string name="readingFile">Please wait reading your file.</string>
+    <string name="writingFile">Please wait writing to your file.</string>
+    <string name="successAdjust">Successfully saved your adjusted file!</string>
     <string name="subtitle">Subtitle</string>
     <string name="actualTime">Actual Start Time</string>
     <string name="time">Time</string>
     <string name="enterFileName">Enter the file name to save on:</string>
+    <string name="star">Star</string>
+    <string name="quit">Quit</string>
+    <string name="requiredPermissions">This app required read,write permissions for your external storage. Otherwise this app won\'t work.</string>
 </resources>

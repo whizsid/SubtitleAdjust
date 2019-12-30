@@ -1,5 +1,6 @@
 package com.whizsid.subtitleadjust
 
+import android.Manifest
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -106,8 +107,8 @@ class SubtitleAdjustActivity : AppCompatActivity() {
 
     private fun onConfirmClick(){
         // Check read write permissions for the external storage
-        val readPermission = PermissionChecker.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        val writePermission = PermissionChecker.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission = PermissionChecker.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        val writePermission = PermissionChecker.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         if (readPermission == PermissionChecker.PERMISSION_GRANTED&&writePermission == PermissionChecker.PERMISSION_GRANTED) {
 
@@ -127,7 +128,7 @@ class SubtitleAdjustActivity : AppCompatActivity() {
             startActivityForResult(chooserIntent, REQUEST_DIRECTORY)
 
         } else {
-            val toast = Toast.makeText(this,"This app required read,write permissions for your external storage. Otherwise this app won't work.",Toast.LENGTH_LONG)
+            val toast = Toast.makeText(this,R.string.requiredPermissions,Toast.LENGTH_LONG)
             toast.show()
         }
     }
@@ -171,7 +172,7 @@ class SubtitleAdjustActivity : AppCompatActivity() {
 
         val subtitles = dbHelper.search(SubtitleModel,"",null)
 
-        val toast = Toast.makeText(this,"Please wait writing to your file.",Toast.LENGTH_LONG)
+        val toast = Toast.makeText(this,R.string.writingFile,Toast.LENGTH_LONG)
         toast.show()
 
         file.printWriter().use { out ->
@@ -188,7 +189,7 @@ class SubtitleAdjustActivity : AppCompatActivity() {
             }
         }
 
-        this.gotoMainActivity("Successfully saved your adjusted file!")
+        this.gotoMainActivity(resources.getString(R.string.successAdjust))
     }
 
     private fun gotoMainActivity(message: String?){
