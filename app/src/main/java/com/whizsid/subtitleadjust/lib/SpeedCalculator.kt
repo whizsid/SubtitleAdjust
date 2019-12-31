@@ -8,9 +8,9 @@ package com.whizsid.subtitleadjust.lib
 class SpeedCalculator(private var adjustList: MutableList<SubtitleAdjust>) {
     private val adjustedItems = adjustList
 
-    private var offset = 0
+    var offset = 0
 
-    private var speed = 0
+    var speed = 0
 
     /**
      * Calculating the offset and speed
@@ -47,9 +47,10 @@ class SpeedCalculator(private var adjustList: MutableList<SubtitleAdjust>) {
                     first.getSubtitle().getStartTime().toInt(),
                     second.getSubtitle().getStartTime().toInt()
                 )
+                index++
+
             }
 
-            index++
         }
 
         this.speed = speeds/index
@@ -79,13 +80,13 @@ class SpeedCalculator(private var adjustList: MutableList<SubtitleAdjust>) {
      * @param b Second error time associated with y time in unix format
      */
     private fun calculateOffset(x:Int,y:Int,a:Int,b:Int):Int {
-        return (a*y - b*x)/(y - x)
+        return  ((a*y) - (b*x))/(b - a)
     }
 
     /**
      * Returning the corrected subtitle after calculating the offset and speed
      */
-    fun getCorrectedSubtitle(errorSubtitle: Subtitle):Subtitle{
+    fun correct(errorSubtitle: Subtitle):Subtitle{
 
         val startTime = errorSubtitle.getStartTime().toInt()*this.speed - this.offset
         val endTime = errorSubtitle.getEndTime().toInt()*this.speed - this.offset

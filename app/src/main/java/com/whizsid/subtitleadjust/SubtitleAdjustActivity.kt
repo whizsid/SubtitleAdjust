@@ -180,7 +180,7 @@ class SubtitleAdjustActivity : AppCompatActivity() {
 
         file.printWriter().use { out ->
             subtitles.forEach {
-                val corrected = calculator.getCorrectedSubtitle(it)
+                val corrected = calculator.correct(it)
 
                 val id = corrected.getId()
                 val content = corrected.getContent()
